@@ -2,12 +2,12 @@
 
 library(tidyverse)
 
-UniverseDescription <- function(dataset){
+UniverseDescription <- function(dataset, year){
 # One of "acs1" or "acs5"  
   if (dataset=="acs5"){
-    fp <- "https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt?#"
+    fp <- glue::glue("https://www2.census.gov/programs-surveys/acs/summary_file/{year}/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt?#")
   } else if (dataset=="acs1"){
-    fp <- "https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/ACS_1yr_Seq_Table_Number_Lookup.txt?#"
+    fp <- glue::glue("https://www2.census.gov/programs-surveys/acs/summary_file/{year}/documentation/user_tools/ACS_1yr_Seq_Table_Number_Lookup.txt?#")
   } else{
     stop("Expecting 'acs1' or 'acs5' for dataset")
   }
@@ -16,7 +16,7 @@ UniverseDescription <- function(dataset){
     filter(str_detect(`Table Title`, "Universe:")) %>%
     select(TableID=`Table ID`,TableTitle= `Table Title`) %>%
     distinct(TableID, TableTitle) %>%
-    mutate(Universe=str_sub(TableTitle, 11)) %>%
+    mutate(Universe=str_sub(TableTitle, 12)) %>%
     select(-TableTitle)
   
   
